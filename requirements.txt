@@ -2,6 +2,10 @@
 pandas
 numpy
 scikit-learn
+scikit-image
+opencv-python-headless
+Pillow
 sentence-transformers
-torch
 transformers
+torch
+torchvision
