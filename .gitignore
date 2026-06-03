@@ -12,3 +12,5 @@ app_v*.py
 
 .DS_Store
 .streamlit/secrets.toml
+
+image_recognition_v3/data/external_datasets/EgyptianHieroglyphicText/
