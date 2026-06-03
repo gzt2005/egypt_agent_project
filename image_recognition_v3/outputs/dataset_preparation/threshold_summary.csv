@@ -1,0 +1,8 @@
+﻿min_samples_per_class,valid_class_count,valid_image_count
+1,310,9703
+5,172,9408
+10,133,9138
+20,88,8498
+30,67,7978
+50,46,7200
+100,29,5973

@@ -1,0 +1,2 @@
+﻿test_samples,top1_accuracy,top3_accuracy,top5_accuracy,top1_error_count,top3_error_count,top5_error_count
+1316,0.9331306990881459,0.9901215805471124,0.9946808510638298,88,13,7

@@ -1,0 +1,39 @@
+ResNet18 古埃及文字识别结果分析报告
+============================================================
+
+整体指标：
+ test_samples  top1_accuracy  top3_accuracy  top5_accuracy  top1_error_count  top3_error_count  top5_error_count
+         1316       0.933131       0.990122       0.994681                88                13                 7
+
+Top-1 准确率最低的类别 Top 10：
+gardiner_code  test_count  top1_accuracy  top3_accuracy  top5_accuracy  top1_error_count  avg_top1_prob
+          F32           3       0.333333       1.000000       1.000000                 2       0.479882
+          G40           3       0.333333       0.666667       0.666667                 2       0.523166
+          S21           8       0.500000       1.000000       1.000000                 4       0.916049
+          D40           6       0.500000       1.000000       1.000000                 3       0.629257
+           D1           4       0.500000       1.000000       1.000000                 2       0.582271
+           X7           4       0.500000       0.750000       0.750000                 2       0.553336
+          G38           5       0.600000       0.800000       1.000000                 2       0.563662
+          R14           5       0.600000       1.000000       1.000000                 2       0.791183
+          S40           5       0.600000       1.000000       1.000000                 2       0.852967
+          U23           5       0.600000       1.000000       1.000000                 2       0.708146
+
+最常见混淆对 Top 10：
+true_gardiner_code pred_top1_code  count
+                D4            D21      4
+               V30            V31      3
+               S21            N33      3
+                D2            V28      2
+                B1            A40      2
+                H6            M17      2
+               U23            V28      2
+               S40            F35      2
+                Z1             Q3      2
+               V13           AA15      2
+
+输出文件：
+1. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\resnet18_baseline\analysis\overall_metrics.csv
+2. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\resnet18_baseline\analysis\per_class_metrics.csv
+3. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\resnet18_baseline\analysis\confusion_pairs_top30.csv
+4. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\resnet18_baseline\analysis\top1_error_cases.csv
+5. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\resnet18_baseline\analysis\top1_error_cases_preview.png

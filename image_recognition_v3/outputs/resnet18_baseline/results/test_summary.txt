@@ -1,0 +1,9 @@
+ResNet18 Baseline 测试结果
+============================================================
+
+测试样本数：1316
+Top-1 Accuracy：0.9331
+Top-3 Accuracy：0.9901
+Top-5 Accuracy：0.9947
+
+预测明细：C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\resnet18_baseline\results\test_predictions.csv

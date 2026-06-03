@@ -1,0 +1,22 @@
+PyTorch DataLoader 检查报告
+============================================================
+
+总图片数：8498
+类别数量：88
+
+Split 分布：
+split  image_count  class_count
+ test         1316           88
+train         5909           88
+  val         1273           88
+
+存在图片数：8498
+缺失图片数：0
+
+train_dataset：5909
+val_dataset：1273
+test_dataset：1316
+
+batch image shape：(16, 3, 224, 224)
+batch label shape：(16,)
+batch preview：C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\dataloader_check\train_batch_preview.png

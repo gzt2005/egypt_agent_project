@@ -1,0 +1,49 @@
+古埃及文字图像识别数据集划分报告
+============================================================
+
+划分比例：
+train: 0.7
+val: 0.15
+test: 0.15
+
+总体统计：
+split  image_count  class_count
+train         5909           88
+  val         1273           88
+ test         1316           88
+
+数据集总图片数：8498
+类别总数：88
+
+每类划分结果前 30 行：
+split gardiner_code  image_count
+ test            A1           25
+ test            A2            6
+ test           A40            9
+ test          AA15           14
+ test            B1            7
+ test            D1            4
+ test            D2           14
+ test           D21           54
+ test           D28           15
+ test           D35            6
+ test           D36           25
+ test           D37           23
+ test            D4           36
+ test           D40            6
+ test           D45            5
+ test           D46           14
+ test           D54            4
+ test           D55           10
+ test           D58           19
+ test           D60            4
+ test           E34            6
+ test            F1           11
+ test           F31           11
+ test           F32            3
+ test           F35           26
+ test           F39            6
+ test           G17           21
+ test           G36            7
+ test           G38            5
+ test           G40            3

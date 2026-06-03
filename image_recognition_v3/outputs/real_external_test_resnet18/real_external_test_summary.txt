@@ -1,0 +1,53 @@
+真实外部古埃及符号裁剪图 ResNet18 测试报告
+======================================================================
+
+总样本数：29
+有效评估样本数：29
+Top-1 Accuracy：0.9655
+Top-3 Accuracy：1.0000
+Top-5 Accuracy：1.0000
+
+类别分布：
+true_gardiner_code
+N35    8
+M17    5
+I9     4
+X1     3
+G17    2
+S29    2
+V30    2
+D21    1
+D4     1
+G43    1
+
+逐图预测结果：
+               image_id true_gardiner_code pred_top1_code pred_top1_prob  top1_hit  top3_hit  top5_hit     pred_top5_codes
+       MET98468_D21_001                D21            D21       0.998478      True      True      True  D21|X1|W24|O1|AA15
+         MET2026_D4_001                 D4             D4       0.891656      True      True      True   D4|X1|O49|W11|D21
+       DP226728_G17_001                G17            G17       0.998563      True      True      True G17|G43|G40|E34|G36
+MET19944964_G17_001.png                G17            G17       0.998571      True      True      True  G17|G36|G43|X8|V31
+       DP322047_G43_001                G43            G43       0.983360      True      True      True  G43|G36|G17|G38|D2
+        DP226728_I9_001                 I9             I9       0.986066      True      True      True    I9|X1|F1|D21|V30
+        DP226728_I9_002                 I9             I9       0.979183      True      True      True   I9|Y1|N25|D37|D36
+        DP226728_I9_003                 I9             I9       0.999682      True      True      True     I9|X1|D37|D2|F1
+        DP226728_I9_004                 I9             I9       0.998013      True      True      True    I9|F1|X1|N35|D46
+       DP226728_M17_001                M17            M17       0.999143      True      True      True    M17|H6|Y1|F35|R8
+       DP226728_M17_002                M17            M17       0.991668      True      True      True    M17|H6|Z1|F35|Y1
+       DP261896_M17_001                M17            M17       0.996528      True      True      True   M17|S29|M23|H6|X8
+        MET2026_M17_001                M17            M17       0.999434      True      True      True   M17|H6|S29|Y1|F35
+      MET543863_M17_003                M17             Z4       0.293776     False      True      True   Z4|M17|Y4|S29|D28
+       DP322047_N35_001                N35            N35       0.998383      True      True      True    N35|O34|Y5|N1|X1
+MET19944964_N35_001.png                N35            N35       0.998173      True      True      True    N35|I9|X1|Y5|G36
+        MET2026_N35_001                N35            N35       0.979161      True      True      True    N35|X1|D4|Y5|V31
+      MET543863_N35_001                N35            N35       0.934961      True      True      True   N35|Y5|X1|AA15|R4
+      MET543863_N35_002                N35            N35       0.999263      True      True      True    N35|V31|N1|X1|Y1
+      MET543863_N35_003                N35            N35       0.994917      True      True      True   N35|X1|Y5|N1|AA15
+       MET98468_N35_001                N35            N35       0.998871      True      True      True    N35|X1|Y5|V31|N1
+           REAL_N35_001                N35            N35       0.998194      True      True      True    N35|V31|I9|X1|Y1
+       DP226728_S29_001                S29            S29       0.925133      True      True      True   S29|Z1|M17|S38|Z4
+       DP226728_S29_002                S29            S29       0.698265      True      True      True    S29|Z1|M17|Z4|Q3
+       DP226728_V30_001                V30            V30       0.995917      True      True      True V30|V31|U7|D21|AA15
+       DP226728_V30_002                V30            V30       0.976051      True      True      True  V30|V31|D21|I9|V13
+        DP226728_X1_001                 X1             X1       0.999783      True      True      True  X1|D21|N33|Q3|AA15
+        DP226728_X1_002                 X1             X1       0.998764      True      True      True   X1|D21|I9|Q3|AA15
+        DP322047_X1_001                 X1             X1       0.972250      True      True      True  X1|D21|AA15|I9|I10

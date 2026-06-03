@@ -15,6 +15,9 @@ from sentence_transformers import SentenceTransformer
 from skimage.feature import hog
 from sklearn.metrics.pairwise import cosine_similarity
 
+# ResNet18 单符号识别模块
+from src.resnet18_hieroglyph_predictor import HieroglyphResNet18Predictor
+
 
 # =========================
 # 1. 页面设置
@@ -546,6 +549,23 @@ def search_uploaded_image_dinov2(image_bytes, top_k=10):
 
 
 # =========================
+# 4.4 ResNet18 单符号识别资源加载
+# =========================
+@st.cache_resource(show_spinner="正在加载 ResNet18 单符号识别模型，请稍等...")
+def load_resnet18_predictor():
+    """加载 ResNet18 古埃及单符号识别器。"""
+    return HieroglyphResNet18Predictor()
+
+
+def predict_uploaded_image_resnet18(uploaded_file, top_k=5):
+    """对 Streamlit 上传图片执行 ResNet18 Top-K 预测。"""
+    image = Image.open(uploaded_file).convert("RGB")
+    predictor = load_resnet18_predictor()
+    results = predictor.predict_pil_image(image, top_k=top_k)
+    return image, pd.DataFrame(results)
+
+
+# =========================
 # 5. 中文查询扩展：SQLite 版
 # =========================
 def expand_chinese_query_sqlite(conn, query: str):
@@ -885,7 +905,7 @@ def semantic_search(query, top_k=10):
 st.title("𓂀 古埃及文字智能检索系统")
 st.caption(
     "Version 2.1｜基于 DIALOG 风格的“主文档—索引文档—倒排档”结构，"
-    "支持 SQLite 关键词检索、中文知识增强、AI 语义检索、图像符号检索与系统性能测评。"
+    "支持 SQLite 关键词检索、中文知识增强、AI 语义检索、DINOv2 图像相似检索、ResNet18 单符号识别与系统性能测评。"
 )
 
 system_counts = load_sqlite_counts()
@@ -948,27 +968,32 @@ with st.sidebar:
 
 search_mode = st.radio(
     "请选择检索模式",
-    ["关键词检索", "AI语义检索", "图像符号检索"],
+    ["关键词检索", "AI语义检索", "DINOv2图像相似检索", "ResNet18单符号识别"],
     horizontal=True
 )
 
 uploaded_sign_file = None
 query = ""
 
-if search_mode == "图像符号检索":
+if search_mode in ["DINOv2图像相似检索", "ResNet18单符号识别"]:
     uploaded_sign_file = st.file_uploader(
         "请上传单个古埃及象形文字符号图片",
         type=["png", "jpg", "jpeg"]
     )
-    st.caption("建议上传单个清晰符号图片。第一版图像模块主要用于单符号相似检索，暂不支持整行碑文 OCR。")
+    if search_mode == "DINOv2图像相似检索":
+        st.caption("建议上传单个清晰符号图片。DINOv2 模块用于相似符号检索，暂不支持整行碑文 OCR。")
+    else:
+        st.caption("建议上传裁剪后的单个象形文字符号。ResNet18 模块用于 88 类 Gardiner 符号分类，暂不支持整张碑文自动分割。")
 else:
     query = st.text_input(
         "请输入检索词或自然语言问题",
         placeholder="例如：神、奥西里斯、法老、亡灵书、ntr、太阳神和国王"
     )
 
-if search_mode == "图像符号检索":
+if search_mode == "DINOv2图像相似检索":
     top_k = st.slider("返回相似符号数量", min_value=3, max_value=20, value=10)
+elif search_mode == "ResNet18单符号识别":
+    top_k = st.slider("返回候选符号数量", min_value=3, max_value=10, value=5)
 else:
     top_k = st.slider("返回结果数量", min_value=3, max_value=20, value=10)
 
@@ -977,9 +1002,91 @@ search_button = st.button("开始检索", type="primary")
 
 if search_button:
     # =========================
-    # 图像符号检索模式：DINOv2 多视图检索
+    # ResNet18 单符号识别模式：监督分类 Top-K
     # =========================
-    if search_mode == "图像符号检索":
+    if search_mode == "ResNet18单符号识别":
+        if uploaded_sign_file is None:
+            st.warning("请先上传一张裁剪后的单个古埃及符号图片。")
+        else:
+            start_time = time.perf_counter()
+            try:
+                uploaded_image, pred_df = predict_uploaded_image_resnet18(
+                    uploaded_file=uploaded_sign_file,
+                    top_k=top_k
+                )
+                elapsed_time = time.perf_counter() - start_time
+
+                st.subheader("ResNet18 单符号识别概览")
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("识别模式", "ResNet18")
+                c2.metric("任务类型", "88类分类")
+                c3.metric("返回候选数", len(pred_df))
+                c4.metric("识别耗时", f"{elapsed_time:.3f} 秒")
+
+                st.markdown("**上传图片：**")
+                st.image(uploaded_image, width=260)
+
+                st.info(
+                    "当前 ResNet18 模型适用于裁剪后的单个象形文字符号识别，"
+                    "会返回 Top-K Gardiner 编号候选及概率。暂不支持整张碑文自动分割或整行 OCR。"
+                )
+                with st.expander("查看 ResNet18 模型性能与适用范围", expanded=False):
+                    st.markdown(
+                    """
+                    **模型说明：**  
+                    当前图像识别模块基于 ResNet18 迁移学习模型构建，用于对裁剪后的单个古埃及象形文字符号进行分类识别。
+
+                    **训练数据：**
+                    - 原始图像数据：9703 张
+                    - 原始类别数量：310 类
+                    - 第一版训练筛选：每类至少 20 张样本
+                    - 最终训练数据：8498 张图像
+                    - 最终分类类别：88 个 Gardiner 符号类别
+
+                    **内部测试结果：**
+                    - Test Top-1 Accuracy：93.31%
+                    - Test Top-3 Accuracy：99.01%
+                    - Test Top-5 Accuracy：99.47%
+
+                    **真实外部测试结果：**
+                    - 外部测试图像：29 张真实馆藏/浮雕裁剪图
+                    - 覆盖类别：D21、D4、G17、G43、I9、M17、N35、S29、V30、X1
+                    - External Top-1 Accuracy：96.55%
+                    - External Top-3 Accuracy：100.00%
+                    - External Top-5 Accuracy：100.00%
+
+                    **适用范围：**
+                    - 适用于已经裁剪好的单个象形文字符号；
+                    - 适用于浮雕、碑刻、馆藏图像中的单符号识别；
+                    - 适合返回 Top-K Gardiner 编号候选，辅助用户判断符号类别。
+
+                    **当前限制：**
+                    - 暂不支持整张碑文自动分割；
+                    - 暂不支持整行 OCR；
+                    - 对破损严重、多个符号粘连或裁剪不完整的图像，Top-1 结果可能不稳定。
+                     """
+                    )
+
+                st.subheader("Top-K 识别结果")
+                display_df = pred_df.copy()
+                if "probability" in display_df.columns:
+                    display_df["probability"] = display_df["probability"].round(6)
+                st.dataframe(display_df, use_container_width=True)
+
+                if len(pred_df) > 0:
+                    top1 = pred_df.iloc[0]
+                    st.success(
+                        f"Top-1 识别结果：{top1['gardiner_code']}｜{top1['english_name']}，"
+                        f"概率 {top1['probability_percent']}。"
+                    )
+
+            except Exception as e:
+                st.error(f"ResNet18 单符号识别失败：{e}")
+
+    # =========================
+    # DINOv2 图像相似检索模式：多视图检索
+    # =========================
+    elif search_mode == "DINOv2图像相似检索":
         if uploaded_sign_file is None:
             st.warning("请先上传一张古埃及符号图片。")
         else:
@@ -995,7 +1102,7 @@ if search_button:
 
                 st.subheader("图像识别概览")
                 c1, c2, c3, c4 = st.columns(4)
-                c1.metric("检索模式", "图像符号检索")
+                c1.metric("检索模式", "DINOv2图像相似检索")
                 c2.metric("子模式", "DINOv2 多视图")
                 c3.metric("返回结果数", len(image_results))
                 c4.metric("识别耗时", f"{elapsed_time:.3f} 秒")

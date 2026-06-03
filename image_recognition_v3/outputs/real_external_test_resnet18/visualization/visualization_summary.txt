@@ -1,0 +1,19 @@
+真实外部测试结果可视化报告
+============================================================
+
+样本数量：29
+Top-1 Accuracy：0.9655
+输出图片：C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\real_external_test_resnet18\visualization\real_external_predictions_grid.png
+
+类别分布：
+true_gardiner_code
+N35    8
+M17    5
+I9     4
+X1     3
+G17    2
+S29    2
+V30    2
+D21    1
+D4     1
+G43    1

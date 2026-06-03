@@ -1,0 +1,26 @@
+古埃及文字图像识别数据集准备报告
+============================================================
+
+原始图片总数：9703
+原始类别数量：310
+
+不同样本阈值下的数据可用情况：
+ min_samples_per_class  valid_class_count  valid_image_count
+                     1                310               9703
+                     5                172               9408
+                    10                133               9138
+                    20                 88               8498
+                    30                 67               7978
+                    50                 46               7200
+                   100                 29               5973
+
+默认筛选阈值：每类至少 20 张
+筛选后图片数：8498
+筛选后类别数：88
+
+输出文件：
+1. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\dataset_preparation\class_distribution_clean.csv
+2. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\dataset_preparation\threshold_summary.csv
+3. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\dataset_preparation\filtered_inventory_min20.csv
+4. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\dataset_preparation\filtered_class_distribution_min20.csv
+5. C:\Users\GE ZITONG\Desktop\egypt_agent_project\image_recognition_v3\outputs\dataset_preparation\preview_grids\top20_classes_preview.png
